@@ -36,8 +36,8 @@ flags.DEFINE_enum('transfer', 'none',
                   'frozen: Transfer and freeze all, '
                   'fine_tune: Transfer all and freeze darknet only')
 flags.DEFINE_integer('size', 416, 'image size')
-flags.DEFINE_integer('epochs', 2, 'number of epochs')
-flags.DEFINE_integer('batch_size', 8, 'batch size')
+flags.DEFINE_integer('epochs', 4, 'number of epochs')
+flags.DEFINE_integer('batch_size', 4, 'batch size')
 flags.DEFINE_float('learning_rate', 1e-3, 'learning rate')
 flags.DEFINE_integer('num_classes', 80, 'number of classes in the model')
 flags.DEFINE_integer('weights_num_classes', None, 'specify num class for `weights` file if different, '
@@ -140,8 +140,7 @@ def main(_argv):
                     total_loss = tf.reduce_sum(pred_loss) + regularization_loss
 
                 grads = tape.gradient(total_loss, model.trainable_variables)
-                optimizer.apply_gradients(
-                    zip(grads, model.trainable_variables))
+                optimizer.apply_gradients(zip(grads, model.trainable_variables))
 
                 logging.info("{}_train_{}, {}, {}".format(
                     epoch, batch, total_loss.numpy(),
