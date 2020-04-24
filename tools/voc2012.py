@@ -13,7 +13,7 @@ flags.DEFINE_string('data_dir', 'D:\DeepLearning\datasets\VOCtrainval_11-May-201
 flags.DEFINE_enum('split', 'train', [
                   'train', 'val'], 'specify train or val spit')
 flags.DEFINE_string('output_file', '../data/voc2012_train.tfrecord', 'outpot dataset')
-flags.DEFINE_string('classes', '../data/voc2012.names', 'classes file')
+flags.DEFINE_string('classes', './data/voc2012.names', 'classes file')
 
 
 def build_example(annotation, class_map):
@@ -93,7 +93,7 @@ def main(_argv):
 
     writer = tf.io.TFRecordWriter(FLAGS.output_file)
     image_list = open(os.path.join(
-        FLAGS.data_dir, 'ImageSets', 'Main', 'aeroplane_%s.txt' % FLAGS.split)).read().splitlines()
+        FLAGS.data_dir, 'ImageSets', 'Main', 'person_%s.txt' % FLAGS.split)).read().splitlines()
     logging.info("Image list loaded: %d", len(image_list))
     for image in tqdm.tqdm(image_list):
         name, _ = image.split()

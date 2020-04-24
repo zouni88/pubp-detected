@@ -114,7 +114,7 @@ def parse_tfrecord(tfrecord, class_table, size):
 
     paddings = [[0, FLAGS.yolo_max_boxes - tf.shape(y_train)[0]], [0, 0]]
     y_train = tf.pad(y_train, paddings)
-
+    print(x_train.shape,y_train.shape)
     return x_train, y_train
 
 
