@@ -151,8 +151,7 @@ def YoloOutput(filters, anchors, classes, name=None):
 def yolo_boxes(pred, anchors, classes):
     # pred: (batch_size, grid, grid, anchors, (x, y, w, h, obj, ...classes))
     grid_size = tf.shape(pred)[1]
-    box_xy, box_wh, objectness, class_probs = tf.split(
-        pred, (2, 2, 1, classes), axis=-1)
+    box_xy, box_wh, objectness, class_probs = tf.split(pred, (2, 2, 1, classes), axis=-1)
 
     box_xy = tf.sigmoid(box_xy)
     objectness = tf.sigmoid(objectness)

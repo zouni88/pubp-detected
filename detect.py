@@ -38,8 +38,7 @@ def main(_argv):
     logging.info('classes loaded')
 
     if FLAGS.tfrecord:
-        dataset = load_tfrecord_dataset(
-            FLAGS.tfrecord, FLAGS.classes, FLAGS.size)
+        dataset = load_tfrecord_dataset(FLAGS.tfrecord, FLAGS.classes, FLAGS.size)
         dataset = dataset.shuffle(512)
         img_raw, _label = next(iter(dataset.take(1)))
     else:

@@ -13,7 +13,7 @@ flags.DEFINE_string('data_dir', 'D:\DeepLearning\datasets\VOCtrainval_11-May-201
 flags.DEFINE_enum('split', 'train', [
                   'train', 'val'], 'specify train or val spit')
 flags.DEFINE_string('output_file', '../data/voc2012_train.tfrecord', 'outpot dataset')
-flags.DEFINE_string('classes', './data/voc2012.names', 'classes file')
+flags.DEFINE_string('classes', '../data/voc2012.names', 'classes file')
 
 
 def build_example(annotation, class_map):

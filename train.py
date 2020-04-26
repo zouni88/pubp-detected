@@ -28,7 +28,7 @@ flags.DEFINE_enum('mode', 'eager_tf', ['fit', 'eager_fit', 'eager_tf'],
                   'fit: model.fit, '
                   'eager_fit: model.fit(run_eagerly=True), '
                   'eager_tf: custom GradientTape')
-flags.DEFINE_enum('transfer', 'none',
+flags.DEFINE_enum('transfer', 'darknet',
                   ['none', 'darknet', 'no_output', 'frozen', 'fine_tune'],
                   'none: Training from scratch, '
                   'darknet: Transfer darknet, '
@@ -37,7 +37,7 @@ flags.DEFINE_enum('transfer', 'none',
                   'fine_tune: Transfer all and freeze darknet only')
 flags.DEFINE_integer('size', 416, 'image size')
 flags.DEFINE_integer('epochs', 4, 'number of epochs')
-flags.DEFINE_integer('batch_size', 4, 'batch size')
+flags.DEFINE_integer('batch_size', 2, 'batch size')
 flags.DEFINE_float('learning_rate', 1e-3, 'learning rate')
 flags.DEFINE_integer('num_classes', 80, 'number of classes in the model')
 flags.DEFINE_integer('weights_num_classes', None, 'specify num class for `weights` file if different, '
@@ -170,21 +170,15 @@ def main(_argv):
             model.save_weights(
                 'checkpoints/yolov3_train_{}.tf'.format(epoch))
     else:
-        model.compile(optimizer=optimizer, loss=loss,
-                      run_eagerly=(FLAGS.mode == 'eager_fit'))
-
+        model.compile(optimizer=optimizer, loss=loss,run_eagerly=(FLAGS.mode == 'eager_fit'))
         callbacks = [
             ReduceLROnPlateau(verbose=1),
             EarlyStopping(patience=3, verbose=1),
-            ModelCheckpoint('checkpoints/yolov3_train_{epoch}.tf',
-                            verbose=1, save_weights_only=True),
+            ModelCheckpoint('checkpoints/yolov3_train_{epoch}.tf',verbose=1, save_weights_only=True),
             TensorBoard(log_dir='logs')
         ]
 
-        history = model.fit(train_dataset,
-                            epochs=FLAGS.epochs,
-                            callbacks=callbacks,
-                            validation_data=val_dataset)
+        history = model.fit(train_dataset,epochs=FLAGS.epochs,callbacks=callbacks,validation_data=val_dataset)
 
 
 if __name__ == '__main__':

@@ -7,8 +7,7 @@ def transform_targets_for_output(y_true, grid_size, anchor_idxs):
     N = tf.shape(y_true)[0]
 
     # y_true_out: (N, grid, grid, anchors, [x, y, w, h, obj, class])
-    y_true_out = tf.zeros(
-        (N, grid_size, grid_size, tf.shape(anchor_idxs)[0], 6))
+    y_true_out = tf.zeros((N, grid_size, grid_size, tf.shape(anchor_idxs)[0], 6))
 
     anchor_idxs = tf.cast(anchor_idxs, tf.int32)
 
@@ -44,6 +43,8 @@ def transform_targets_for_output(y_true, grid_size, anchor_idxs):
 
 
 def transform_targets(y_train, anchors, anchor_masks, size):
+    # y_train[None,None,5],anchors=>[9,2],anchor_masks=>[3,3],size=>416
+    print(y_train.shape,anchors.shape,anchor_masks.shape,size)
     y_outs = []
     grid_size = size // 32
 
@@ -51,6 +52,7 @@ def transform_targets(y_train, anchors, anchor_masks, size):
     anchors = tf.cast(anchors, tf.float32)
     anchor_area = anchors[..., 0] * anchors[..., 1]
     box_wh = y_train[..., 2:4] - y_train[..., 0:2]
+    print('box_wh=>',box_wh)
     box_wh = tf.tile(tf.expand_dims(box_wh, -2),
                      (1, 1, tf.shape(anchors)[0], 1))
     box_area = box_wh[..., 0] * box_wh[..., 1]
@@ -103,8 +105,7 @@ def parse_tfrecord(tfrecord, class_table, size):
     x_train = tf.image.decode_jpeg(x['image/encoded'], channels=3)
     x_train = tf.image.resize(x_train, (size, size))
 
-    class_text = tf.sparse.to_dense(
-        x['image/object/class/text'], default_value='')
+    class_text = tf.sparse.to_dense(x['image/object/class/text'], default_value='')
     labels = tf.cast(class_table.lookup(class_text), tf.float32)
     y_train = tf.stack([tf.sparse.to_dense(x['image/object/bbox/xmin']),
                         tf.sparse.to_dense(x['image/object/bbox/ymin']),
@@ -115,6 +116,7 @@ def parse_tfrecord(tfrecord, class_table, size):
     paddings = [[0, FLAGS.yolo_max_boxes - tf.shape(y_train)[0]], [0, 0]]
     y_train = tf.pad(y_train, paddings)
     print(x_train.shape,y_train.shape)
+    # y_train [100,5]
     return x_train, y_train
 
 
@@ -125,6 +127,9 @@ def load_tfrecord_dataset(file_pattern, class_file, size=416):
 
     files = tf.data.Dataset.list_files(file_pattern)
     dataset = files.flat_map(tf.data.TFRecordDataset)
+    # 调试代码
+    x = next(iter(dataset.take(1)))
+    parse_tfrecord(x,class_table,size)
     return dataset.map(lambda x: parse_tfrecord(x, class_table, size))
 
 
