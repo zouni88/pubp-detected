@@ -30,7 +30,7 @@ flags.DEFINE_enum('mode', 'eager_tf', ['fit', 'eager_fit', 'eager_tf'],
                   'fit: model.fit, '
                   'eager_fit: model.fit(run_eagerly=True), '
                   'eager_tf: custom GradientTape')
-flags.DEFINE_enum('transfer', 'darknet',
+flags.DEFINE_enum('transfer', 'none',
                   ['none', 'darknet', 'no_output', 'frozen', 'fine_tune'],
                   'none: Training from scratch, '
                   'darknet: Transfer darknet, '
@@ -39,10 +39,10 @@ flags.DEFINE_enum('transfer', 'darknet',
                   'fine_tune: Transfer all and freeze darknet only')
 flags.DEFINE_integer('size', 416, 'image size')
 flags.DEFINE_integer('epochs', 4, 'number of epochs')
-flags.DEFINE_integer('batch_size', 4, 'batch size')
-flags.DEFINE_float('learning_rate', 1e-4, 'learning rate')
+flags.DEFINE_integer('batch_size', 2, 'batch size')
+flags.DEFINE_float('learning_rate', 1e-5, 'learning rate')
 flags.DEFINE_integer('num_classes', 20, 'number of classes in the model')
-flags.DEFINE_integer('weights_num_classes', None, 'specify num class for `weights` file if different, '
+flags.DEFINE_integer('weights_num_classes', 80, 'specify num class for `weights` file if different, '
                                                   'useful in transfer learning with different number of classes')
 
 
@@ -127,7 +127,7 @@ def main(_argv):
 
     model.summary()
     model.summary()
-    current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    current_time = datetime.now().strftime("%Y%m%d-%H%M%S")
     log_dir = 'logs/' + current_time
     summary_writer = tf.summary.create_file_writer(log_dir)
 
@@ -155,8 +155,7 @@ def main(_argv):
                     list(map(lambda x: np.sum(x.numpy()), pred_loss))))
                 avg_loss.update_state(total_loss)
                 with summary_writer.as_default():
-                    tf.summary.scalar('train-loss', float(loss), step=batch)
-
+                    tf.summary.scalar('train-loss', float(total_loss), step=batch)
 
             for batch, (images, labels) in enumerate(val_dataset):
                 outputs = model(images)

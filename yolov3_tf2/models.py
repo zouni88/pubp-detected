@@ -302,6 +302,11 @@ def YoloLoss(anchors, classes=80, ignore_thresh=0.5):
         obj_loss = binary_crossentropy(true_obj, pred_obj)
         obj_loss = obj_mask * obj_loss + \
             (1 - obj_mask) * ignore_mask * obj_loss
+
+        # conf_focal = tf.pow(obj_mask - tf.squeeze(tf.sigmoid(pred_obj), -1), 2)
+        # loss_obj = tf.squeeze(tf.nn.sigmoid_cross_entropy_with_logits(true_obj, pred_obj), axis=-1)
+        # loss_obj = conf_focal * (obj_mask * loss_obj + noobj_mask * loss_obj)  # batch * grid * grid * anchors_per_scale
+
         # TODO: use binary_crossentropy instead
         class_loss = obj_mask * sparse_categorical_crossentropy(
             true_class_idx, pred_class)
