@@ -25,12 +25,12 @@ flags.DEFINE_string('val_dataset', './data/voc2012_val.tfrecord', 'path to valid
 flags.DEFINE_boolean('tiny', False, 'yolov3 or yolov3-tiny')
 flags.DEFINE_string('weights', './checkpoints/yolov3.tf',
                     'path to weights file')
-flags.DEFINE_string('classes', './data/coco.names', 'path to classes file')
-flags.DEFINE_enum('mode', 'eager_tf', ['fit', 'eager_fit', 'eager_tf'],
+flags.DEFINE_string('classes', './data/voc2012.names', 'path to classes file')
+flags.DEFINE_enum('mode', 'fit', ['fit', 'eager_fit', 'eager_tf'],
                   'fit: model.fit, '
                   'eager_fit: model.fit(run_eagerly=True), '
                   'eager_tf: custom GradientTape')
-flags.DEFINE_enum('transfer', 'none',
+flags.DEFINE_enum('transfer', 'darknet',
                   ['none', 'darknet', 'no_output', 'frozen', 'fine_tune'],
                   'none: Training from scratch, '
                   'darknet: Transfer darknet, '
@@ -38,9 +38,11 @@ flags.DEFINE_enum('transfer', 'none',
                   'frozen: Transfer and freeze all, '
                   'fine_tune: Transfer all and freeze darknet only')
 flags.DEFINE_integer('size', 416, 'image size')
-flags.DEFINE_integer('epochs', 4, 'number of epochs')
-flags.DEFINE_integer('batch_size', 2, 'batch size')
+flags.DEFINE_integer('epochs', 20, 'number of epochs')
+flags.DEFINE_integer('batch_size', 4, 'batch size')
+
 flags.DEFINE_float('learning_rate', 1e-5, 'learning rate')
+
 flags.DEFINE_integer('num_classes', 20, 'number of classes in the model')
 flags.DEFINE_integer('weights_num_classes', 80, 'specify num class for `weights` file if different, '
                                                   'useful in transfer learning with different number of classes')
@@ -156,6 +158,7 @@ def main(_argv):
                 avg_loss.update_state(total_loss)
                 with summary_writer.as_default():
                     tf.summary.scalar('train-loss', float(total_loss), step=batch)
+
 
             for batch, (images, labels) in enumerate(val_dataset):
                 outputs = model(images)
