@@ -19,7 +19,7 @@ flags.DEFINE_string('video', './data/video.mp4',
                     'path to video file or number for webcam)')
 flags.DEFINE_string('output', None, 'path to output video')
 flags.DEFINE_string('output_format', 'XVID', 'codec used in VideoWriter when saving video to file')
-flags.DEFINE_integer('num_classes', 80, 'number of classes in the model')
+flags.DEFINE_integer('num_classes', 20, 'number of classes in the model')
 
 
 def main(_argv):

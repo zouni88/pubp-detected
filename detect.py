@@ -18,7 +18,7 @@ flags.DEFINE_integer('size', 416, 'resize images to')
 flags.DEFINE_string('image', './data/aaa.jpg', 'path to input image')
 flags.DEFINE_string('tfrecord', None, 'tfrecord instead of image')
 flags.DEFINE_string('output', './output.jpg', 'path to output image')
-flags.DEFINE_integer('num_classes', 80, 'number of classes in the model')
+flags.DEFINE_integer('num_classes', 20, 'number of classes in the model')
 
 
 def main(_argv):
