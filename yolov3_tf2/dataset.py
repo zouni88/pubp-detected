@@ -1,7 +1,7 @@
 import tensorflow as tf
 from absl.flags import FLAGS
 
-@tf.function
+# @tf.function
 def transform_targets_for_output(y_true, grid_size, anchor_idxs):
     # y_true: (N, boxes, (x1, y1, x2, y2, class, best_anchor))
     N = tf.shape(y_true)[0]
@@ -18,8 +18,7 @@ def transform_targets_for_output(y_true, grid_size, anchor_idxs):
         for j in tf.range(tf.shape(y_true)[1]):
             if tf.equal(y_true[i][j][2], 0):
                 continue
-            anchor_eq = tf.equal(
-                anchor_idxs, tf.cast(y_true[i][j][5], tf.int32))
+            anchor_eq = tf.equal(anchor_idxs, tf.cast(y_true[i][j][5], tf.int32))
 
             if tf.reduce_any(anchor_eq):
                 box = y_true[i][j][0:4]
@@ -51,22 +50,25 @@ def transform_targets(y_train, anchors, anchor_masks, size):
     # calculate anchor index for true boxes
     anchors = tf.cast(anchors, tf.float32)
     anchor_area = anchors[..., 0] * anchors[..., 1]
+    # [b,100,2]
     box_wh = y_train[..., 2:4] - y_train[..., 0:2]
     print('box_wh=>',box_wh)
-    box_wh = tf.tile(tf.expand_dims(box_wh, -2),
-                     (1, 1, tf.shape(anchors)[0], 1))
+    # [b,100,9,2]
+    box_wh = tf.tile(tf.expand_dims(box_wh, -2),(1, 1, tf.shape(anchors)[0], 1))
+    #[b,100,9]
     box_area = box_wh[..., 0] * box_wh[..., 1]
-    intersection = tf.minimum(box_wh[..., 0], anchors[..., 0]) * \
-        tf.minimum(box_wh[..., 1], anchors[..., 1])
+    intersection = tf.minimum(box_wh[..., 0], anchors[..., 0]) * tf.minimum(box_wh[..., 1], anchors[..., 1])
+    # [b,100,9]
     iou = intersection / (box_area + anchor_area - intersection)
+    # [b,100,1]
     anchor_idx = tf.cast(tf.argmax(iou, axis=-1), tf.float32)
     anchor_idx = tf.expand_dims(anchor_idx, axis=-1)
 
     y_train = tf.concat([y_train, anchor_idx], axis=-1)
 
     for anchor_idxs in anchor_masks:
-        y_outs.append(transform_targets_for_output(
-            y_train, grid_size, anchor_idxs))
+        res = transform_targets_for_output(y_train, grid_size, anchor_idxs)
+        y_outs.append(res)
         grid_size *= 2
 
     return tuple(y_outs)

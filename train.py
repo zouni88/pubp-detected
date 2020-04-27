@@ -69,6 +69,10 @@ def main(_argv):
             FLAGS.dataset, FLAGS.classes, FLAGS.size)
     train_dataset = train_dataset.shuffle(buffer_size=512)
     train_dataset = train_dataset.batch(FLAGS.batch_size)
+    # 调试
+    # x,y = next(iter(train_dataset.take(1)))
+    # dataset.transform_targets(y, anchors, anchor_masks, FLAGS.size)
+
     train_dataset = train_dataset.map(lambda x, y: (
         dataset.transform_images(x, FLAGS.size),
         dataset.transform_targets(y, anchors, anchor_masks, FLAGS.size)))
