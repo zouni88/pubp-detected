@@ -24,7 +24,7 @@ def main(_argv):
     dataset = load_tfrecord_dataset(FLAGS.dataset, FLAGS.classes, FLAGS.size)
     dataset = dataset.shuffle(512)
 
-    for image, labels in dataset.take(1):
+    for image, labels in dataset.take(10):
         boxes = []
         scores = []
         classes = []

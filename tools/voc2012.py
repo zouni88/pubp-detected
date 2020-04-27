@@ -8,12 +8,17 @@ import tensorflow as tf
 import lxml.etree
 import tqdm
 
-flags.DEFINE_string('data_dir', 'D:\DeepLearning\datasets\VOCtrainval_11-May-2012\VOCdevkit\VOC2012/',
+flags.DEFINE_string('data_dir', 'D:\DeepLearning\datasets\VOCdevkit\VOC2012/',
                     'path to raw PASCAL VOC dataset')
-flags.DEFINE_enum('split', 'train', [
+flags.DEFINE_enum('split', 'val', [
                   'train', 'val'], 'specify train or val spit')
+<<<<<<< Updated upstream
 flags.DEFINE_string('output_file', '../data/voc2012_train.tfrecord', 'outpot dataset')
 flags.DEFINE_string('classes', '../data/voc2012.names', 'classes file')
+=======
+flags.DEFINE_string('output_file', './data/voc2012_val.tfrecord', 'outpot dataset')
+flags.DEFINE_string('classes', './data/voc2012.names', 'classes file')
+>>>>>>> Stashed changes
 
 
 def build_example(annotation, class_map):
@@ -36,6 +41,7 @@ def build_example(annotation, class_map):
     difficult_obj = []
     if 'object' in annotation:
         for obj in annotation['object']:
+
             difficult = bool(int(obj['difficult']))
             difficult_obj.append(int(difficult))
 

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from absl import app, flags, logging
 from absl.flags import FLAGS
 
@@ -37,11 +39,11 @@ flags.DEFINE_enum('transfer', 'darknet',
                   'fine_tune: Transfer all and freeze darknet only')
 flags.DEFINE_integer('size', 416, 'image size')
 flags.DEFINE_integer('epochs', 4, 'number of epochs')
-flags.DEFINE_integer('batch_size', 2, 'batch size')
+flags.DEFINE_integer('batch_size', 4, 'batch size')
 flags.DEFINE_float('learning_rate', 1e-4, 'learning rate')
 flags.DEFINE_integer('num_classes', 20, 'number of classes in the model')
 flags.DEFINE_integer('weights_num_classes', None, 'specify num class for `weights` file if different, '
-                     'useful in transfer learning with different number of classes')
+                                                  'useful in transfer learning with different number of classes')
 
 
 def main(_argv):
@@ -123,6 +125,12 @@ def main(_argv):
     loss = [YoloLoss(anchors[mask], classes=FLAGS.num_classes)
             for mask in anchor_masks]
 
+    model.summary()
+    model.summary()
+    current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    log_dir = 'logs/' + current_time
+    summary_writer = tf.summary.create_file_writer(log_dir)
+
     if FLAGS.mode == 'eager_tf':
         # Eager mode is great for debugging
         # Non eager graph mode is recommended for real training
@@ -146,6 +154,9 @@ def main(_argv):
                     epoch, batch, total_loss.numpy(),
                     list(map(lambda x: np.sum(x.numpy()), pred_loss))))
                 avg_loss.update_state(total_loss)
+                with summary_writer.as_default():
+                    tf.summary.scalar('train-loss', float(loss), step=batch)
+
 
             for batch, (images, labels) in enumerate(val_dataset):
                 outputs = model(images)
