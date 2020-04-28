@@ -28,10 +28,8 @@ def transform_targets_for_output(y_true, grid_size, anchor_idxs):
                 grid_xy = tf.cast(box_xy // (1/grid_size), tf.int32)
 
                 # grid[y][x][anchor] = (tx, ty, bw, bh, obj, class)
-                indexes = indexes.write(
-                    idx, [i, grid_xy[1], grid_xy[0], anchor_idx[0][0]])
-                updates = updates.write(
-                    idx, [box[0], box[1], box[2], box[3], 1, y_true[i][j][4]])
+                indexes = indexes.write(idx, [i, grid_xy[1], grid_xy[0], anchor_idx[0][0]])
+                updates = updates.write(idx, [box[0], box[1], box[2], box[3], 1, y_true[i][j][4]])
                 idx += 1
 
     # tf.print(indexes.stack())
@@ -63,14 +61,14 @@ def transform_targets(y_train, anchors, anchor_masks, size):
     # [b,100,1]
     anchor_idx = tf.cast(tf.argmax(iou, axis=-1), tf.float32)
     anchor_idx = tf.expand_dims(anchor_idx, axis=-1)
-
+    # [b,100,(x,y,w,h,conf))] => [b,100,6]
     y_train = tf.concat([y_train, anchor_idx], axis=-1)
 
     for anchor_idxs in anchor_masks:
         res = transform_targets_for_output(y_train, grid_size, anchor_idxs)
         y_outs.append(res)
         grid_size *= 2
-
+    #[b,13,13,3,5*20] [b,26,26,3,5*20] [b,52,52,3,5*20]
     return tuple(y_outs)
 
 

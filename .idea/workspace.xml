@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8f587b01-1d84-4df3-a038-00192110cfb0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/detect.py" beforeDir="false" afterPath="$PROJECT_DIR$/detect.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yolov3_tf2/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/yolov3_tf2/dataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yolov3_tf2/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/yolov3_tf2/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +45,7 @@
       <recent name="D:\WorkProject\DeepLearning\pubp-detected\checkpoints" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.visualize_dataset">
+  <component name="RunManager" selected="Python.train">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="yolov3-tf2" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -162,7 +162,7 @@
       <workItem from="1587889771581" duration="10128000" />
       <workItem from="1587951054802" duration="7327000" />
       <workItem from="1587960739530" duration="10457000" />
-      <workItem from="1588042858314" duration="1564000" />
+      <workItem from="1588042858314" duration="13993000" />
     </task>
     <servers />
   </component>
@@ -204,22 +204,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="735" y="261" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1587968965074" />
-    <state width="1877" height="356" key="GridCell.Tab.0.bottom" timestamp="1587990612419">
+    <state width="1877" height="147" key="GridCell.Tab.0.bottom" timestamp="1588058540016">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="356" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1587990612419" />
-    <state width="1877" height="356" key="GridCell.Tab.0.center" timestamp="1587990612419">
+    <state width="1877" height="147" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588058540016" />
+    <state width="1877" height="147" key="GridCell.Tab.0.center" timestamp="1588058540016">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="356" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1587990612419" />
-    <state width="1877" height="356" key="GridCell.Tab.0.left" timestamp="1587990612419">
+    <state width="1877" height="147" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588058540016" />
+    <state width="1877" height="147" key="GridCell.Tab.0.left" timestamp="1588058540016">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="356" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1587990612419" />
-    <state width="1877" height="356" key="GridCell.Tab.0.right" timestamp="1587990612419">
+    <state width="1877" height="147" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588058540016" />
+    <state width="1877" height="147" key="GridCell.Tab.0.right" timestamp="1588058540016">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="356" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1587990612419" />
+    <state width="1877" height="147" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588058540016" />
     <state width="1877" height="383" key="GridCell.Tab.1.bottom" timestamp="1587951037837">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -240,10 +240,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="162" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1587968967877" />
-    <state x="636" y="253" width="647" height="534" key="find.popup" timestamp="1587811660272">
+    <state x="636" y="253" width="647" height="534" key="find.popup" timestamp="1588061527226">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="636" y="253" width="647" height="534" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1587811660272" />
+    <state x="636" y="253" width="647" height="534" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1588061527226" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1588043764065">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -262,7 +262,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/pubp_detected$detect.coverage" NAME="detect Coverage Results" MODIFIED="1587953980420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/pubp_detected$train.coverage" NAME="train Coverage Results" MODIFIED="1587982450237" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/pubp_detected$train.coverage" NAME="train Coverage Results" MODIFIED="1588044730671" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/pubp_detected$visualize_dataset.coverage" NAME="visualize_dataset Coverage Results" MODIFIED="1587948718799" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tools" />
     <SUITE FILE_PATH="coverage/pubp_detected$convert.coverage" NAME="convert Coverage Results" MODIFIED="1587949717969" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
