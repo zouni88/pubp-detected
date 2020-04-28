@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8f587b01-1d84-4df3-a038-00192110cfb0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/yolov3-tf2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/yolov3-tf2.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/detect.py" beforeDir="false" afterPath="$PROJECT_DIR$/detect.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,6 +72,9 @@
       <module name="pubp-detected" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -111,6 +116,9 @@
       <module name="pubp-detected" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tools" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -153,7 +161,8 @@
       <workItem from="1587874825089" duration="1914000" />
       <workItem from="1587889771581" duration="10128000" />
       <workItem from="1587951054802" duration="7327000" />
-      <workItem from="1587960739530" duration="10412000" />
+      <workItem from="1587960739530" duration="10457000" />
+      <workItem from="1588042858314" duration="1564000" />
     </task>
     <servers />
   </component>
@@ -195,22 +204,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="735" y="261" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1587968965074" />
-    <state width="1877" height="356" key="GridCell.Tab.0.bottom" timestamp="1587987672819">
+    <state width="1877" height="356" key="GridCell.Tab.0.bottom" timestamp="1587990612419">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="356" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1587987672819" />
-    <state width="1877" height="356" key="GridCell.Tab.0.center" timestamp="1587987672818">
+    <state width="1877" height="356" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1587990612419" />
+    <state width="1877" height="356" key="GridCell.Tab.0.center" timestamp="1587990612419">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="356" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1587987672818" />
-    <state width="1877" height="356" key="GridCell.Tab.0.left" timestamp="1587987672818">
+    <state width="1877" height="356" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1587990612419" />
+    <state width="1877" height="356" key="GridCell.Tab.0.left" timestamp="1587990612419">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="356" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1587987672818" />
-    <state width="1877" height="356" key="GridCell.Tab.0.right" timestamp="1587987672818">
+    <state width="1877" height="356" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1587990612419" />
+    <state width="1877" height="356" key="GridCell.Tab.0.right" timestamp="1587990612419">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="356" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1587987672818" />
+    <state width="1877" height="356" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1587990612419" />
     <state width="1877" height="383" key="GridCell.Tab.1.bottom" timestamp="1587951037837">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -235,6 +244,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="636" y="253" width="647" height="534" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1587811660272" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1588043764065">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1588043764065" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

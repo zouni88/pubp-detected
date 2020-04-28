@@ -38,8 +38,13 @@ flags.DEFINE_enum('transfer', 'darknet',
                   'frozen: Transfer and freeze all, '
                   'fine_tune: Transfer all and freeze darknet only')
 flags.DEFINE_integer('size', 416, 'image size')
+<<<<<<< Updated upstream
 flags.DEFINE_integer('epochs', 20, 'number of epochs')
 flags.DEFINE_integer('batch_size', 4, 'batch size')
+=======
+flags.DEFINE_integer('epochs', 4, 'number of epochs')
+flags.DEFINE_integer('batch_size', 2, 'batch size')
+>>>>>>> Stashed changes
 
 flags.DEFINE_float('learning_rate', 1e-5, 'learning rate')
 
