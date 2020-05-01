@@ -161,7 +161,7 @@ def yolo_boxes(pred, anchors, classes):
     # !!! grid[x][y] == (y, x)
     grid = tf.meshgrid(tf.range(grid_size), tf.range(grid_size))
     grid = tf.expand_dims(tf.stack(grid, axis=-1), axis=2)  # [gx, gy, 1, 2]
-
+    # 预测出来的偏移量 + 网格点 = 中心点坐标 （相对特征图grid_size上的中心点坐标）
     box_xy = (box_xy + tf.cast(grid, tf.float32)) / tf.cast(grid_size, tf.float32)
     box_wh = tf.exp(box_wh) * anchors
 

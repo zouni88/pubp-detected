@@ -19,8 +19,7 @@ flags.DEFINE_string('classes', '../data/voc2012.names', 'classes file')
 
 
 def build_example(annotation, class_map):
-    img_path = os.path.join(
-        FLAGS.data_dir, 'JPEGImages', annotation['filename'])
+    img_path = os.path.join(FLAGS.data_dir, 'JPEGImages', annotation['filename'])
     img_raw = open(img_path, 'rb').read()
     key = hashlib.sha256(img_raw).hexdigest()
 
@@ -100,8 +99,7 @@ def main(_argv):
     logging.info("Image list loaded: %d", len(image_list))
     for image in tqdm.tqdm(image_list):
         name, _ = image.split()
-        annotation_xml = os.path.join(
-            FLAGS.data_dir, 'Annotations', name + '.xml')
+        annotation_xml = os.path.join(FLAGS.data_dir, 'Annotations', name + '.xml')
         annotation_xml = lxml.etree.fromstring(open(annotation_xml).read())
         annotation = parse_xml(annotation_xml)['annotation']
         tf_example = build_example(annotation, class_map)

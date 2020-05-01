@@ -58,10 +58,11 @@ def transform_targets(y_train, anchors, anchor_masks, size):
     intersection = tf.minimum(box_wh[..., 0], anchors[..., 0]) * tf.minimum(box_wh[..., 1], anchors[..., 1])
     # [b,100,9]
     iou = intersection / (box_area + anchor_area - intersection)
-    # [b,100,1]
+    # [b,100]
     anchor_idx = tf.cast(tf.argmax(iou, axis=-1), tf.float32)
+    # [b,100,1]
     anchor_idx = tf.expand_dims(anchor_idx, axis=-1)
-    # [b,100,(x,y,w,h,conf))] => [b,100,6]
+    # [b,100,(x,y,w,h,class))] and [b,100,conf] => [b,100,6]
     y_train = tf.concat([y_train, anchor_idx], axis=-1)
 
     for anchor_idxs in anchor_masks:
