@@ -22,10 +22,10 @@ from tensorflow.keras.losses import (
 from .batch_norm import BatchNormalization
 from .utils import broadcast_iou
 
-flags.DEFINE_integer('yolo_max_boxes', 100,
+flags.DEFINE_integer('yolo_max_boxes', 100, # 100
                      'maximum number of boxes per image')
-flags.DEFINE_float('yolo_iou_threshold', 0.5, 'iou threshold')
-flags.DEFINE_float('yolo_score_threshold', 0.5, 'score threshold')
+flags.DEFINE_float('yolo_iou_threshold', 0.2, 'iou threshold')
+flags.DEFINE_float('yolo_score_threshold', 0.2, 'score threshold')
 
 yolo_anchors = np.array([(10, 13), (16, 30), (33, 23), (30, 61), (62, 45),
                          (59, 119), (116, 90), (156, 198), (373, 326)],
@@ -164,9 +164,11 @@ def yolo_boxes(pred, anchors, classes):
     # 预测出来的偏移量 + 网格点 = 中心点坐标 （相对特征图grid_size上的中心点坐标）
     box_xy = (box_xy + tf.cast(grid, tf.float32)) / tf.cast(grid_size, tf.float32)
     box_wh = tf.exp(box_wh) * anchors
-
+    # 左上角坐标
     box_x1y1 = box_xy - box_wh / 2
+    # 右下角坐标
     box_x2y2 = box_xy + box_wh / 2
+    # 网格点坐标
     bbox = tf.concat([box_x1y1, box_x2y2], axis=-1)
 
     return bbox, objectness, class_probs, pred_box
@@ -257,15 +259,13 @@ def YoloLoss(anchors, classes=80, ignore_thresh=0.5):
     def yolo_loss(y_true, y_pred):
         # 1. transform all pred outputs
         # y_pred: (batch_size, grid, grid, anchors, (x, y, w, h, obj, ...cls))
-        pred_box, pred_obj, pred_class, pred_xywh = yolo_boxes(
-            y_pred, anchors, classes)
+        pred_box, pred_obj, pred_class, pred_xywh = yolo_boxes(y_pred, anchors, classes)
         pred_xy = pred_xywh[..., 0:2]
         pred_wh = pred_xywh[..., 2:4]
 
         # 2. transform all true outputs
         # y_true: (batch_size, grid, grid, anchors, (x1, y1, x2, y2, obj, cls))
-        true_box, true_obj, true_class_idx = tf.split(
-            y_true, (4, 1, 1), axis=-1)
+        true_box, true_obj, true_class_idx = tf.split(y_true, (4, 1, 1), axis=-1)
         true_xy = (true_box[..., 0:2] + true_box[..., 2:4]) / 2
         true_wh = true_box[..., 2:4] - true_box[..., 0:2]
 
@@ -302,6 +302,7 @@ def YoloLoss(anchors, classes=80, ignore_thresh=0.5):
 
         # TODO: use binary_crossentropy instead
         class_loss = obj_mask * sparse_categorical_crossentropy(true_class_idx, pred_class)
+        # class_loss = obj_mask * binary_crossentropy(true_class_idx,pred_class)
 
         # 6. sum over (batch, gridx, gridy, anchors) => (batch, 1)
         xy_loss = tf.reduce_sum(xy_loss, axis=(1, 2, 3))

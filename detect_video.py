@@ -10,16 +10,16 @@ from yolov3_tf2.dataset import transform_images
 from yolov3_tf2.utils import draw_outputs
 
 
-flags.DEFINE_string('classes', './data/coco.names', 'path to classes file')
-flags.DEFINE_string('weights', './checkpoints/yolov3.tf',
+flags.DEFINE_string('classes', './data/voc2012.names', 'path to classes file')
+flags.DEFINE_string('weights', './checkpoints/yolov3_train_18.tf',
                     'path to weights file')
 flags.DEFINE_boolean('tiny', False, 'yolov3 or yolov3-tiny')
 flags.DEFINE_integer('size', 416, 'resize images to')
-flags.DEFINE_string('video', './data/video.mp4',
+flags.DEFINE_string('video', './data/aaaa.mp4',
                     'path to video file or number for webcam)')
-flags.DEFINE_string('output', None, 'path to output video')
+flags.DEFINE_string('output', './output.mp4', 'path to output video')
 flags.DEFINE_string('output_format', 'XVID', 'codec used in VideoWriter when saving video to file')
-flags.DEFINE_integer('num_classes', 20, 'number of classes in the model')
+flags.DEFINE_integer('num_classes', 2, 'number of classes in the model')
 
 
 def main(_argv):

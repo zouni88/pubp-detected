@@ -2,40 +2,6 @@ import tensorflow as tf
 from absl.flags import FLAGS
 
 @tf.function
-def transform_targets(y_train, anchors, anchor_masks, size):
-    # y_train[None,None,5],anchors=>[9,2],anchor_masks=>[3,3],size=>416
-    print(y_train.shape,anchors.shape,anchor_masks.shape,size)
-    y_outs = []
-    grid_size = size // 32
-
-    # calculate anchor index for true boxes
-    anchors = tf.cast(anchors, tf.float32)
-    anchor_area = anchors[..., 0] * anchors[..., 1]
-    # [b,100,2]
-    box_wh = y_train[..., 2:4] - y_train[..., 0:2]
-    print('box_wh=>',box_wh)
-    # [b,100,9,2]
-    box_wh = tf.tile(tf.expand_dims(box_wh, -2),(1, 1, tf.shape(anchors)[0], 1))
-    #[b,100,9]
-    box_area = box_wh[..., 0] * box_wh[..., 1]
-    intersection = tf.minimum(box_wh[..., 0], anchors[..., 0]) * tf.minimum(box_wh[..., 1], anchors[..., 1])
-    # [b,100,9]
-    iou = intersection / (box_area + anchor_area - intersection)
-    # [b,100]
-    anchor_idx = tf.cast(tf.argmax(iou, axis=-1), tf.float32)
-    # [b,100,1]
-    anchor_idx = tf.expand_dims(anchor_idx, axis=-1)
-    # [b,100,(x,y,w,h,class))] and [b,100,conf] => [b,100,6]
-    y_train = tf.concat([y_train, anchor_idx], axis=-1)
-
-    for anchor_idxs in anchor_masks:
-        res = transform_targets_for_output(y_train, grid_size, anchor_idxs)
-        y_outs.append(res)
-        grid_size *= 2
-    #[b,13,13,3,5*20] [b,26,26,3,5*20] [b,52,52,3,5*20]
-    return tuple(y_outs)
-
-
 def transform_targets_for_output(y_true, grid_size, anchor_idxs):
     # y_true: (N, boxes, (x1, y1, x2, y2, class, best_anchor))
     N = tf.shape(y_true)[0]
@@ -69,9 +35,42 @@ def transform_targets_for_output(y_true, grid_size, anchor_idxs):
 
     # tf.print(indexes.stack())
     # tf.print(updates.stack())
-
+    # tf.print('y_true=',y_true_out.shape,'indexes=',indexes.stack().shape,'updates=',updates.stack().shape)
     return tf.tensor_scatter_nd_update(
         y_true_out, indexes.stack(), updates.stack())
+
+
+def transform_targets(y_train, anchors, anchor_masks, size):
+    # y_train[None,None,5],anchors=>[9,2],anchor_masks=>[3,3],size=>416
+    print(y_train.shape,anchors.shape,anchor_masks.shape,size)
+    y_outs = []
+    grid_size = size // 32
+
+    # calculate anchor index for true boxes
+    anchors = tf.cast(anchors, tf.float32)
+    anchor_area = anchors[..., 0] * anchors[..., 1]
+    # [b,100,2]
+    box_wh = y_train[..., 2:4] - y_train[..., 0:2]
+    # [b,100,9,2]
+    box_wh = tf.tile(tf.expand_dims(box_wh, -2),(1, 1, tf.shape(anchors)[0], 1))
+    #[b,100,9]
+    box_area = box_wh[..., 0] * box_wh[..., 1]
+    intersection = tf.minimum(box_wh[..., 0], anchors[..., 0]) * tf.minimum(box_wh[..., 1], anchors[..., 1])
+    # [b,100,9]
+    iou = intersection / (box_area + anchor_area - intersection)
+    # [b,100]
+    anchor_idx = tf.cast(tf.argmax(iou, axis=-1), tf.float32)
+    # [b,100,1]
+    anchor_idx = tf.expand_dims(anchor_idx, axis=-1)
+    # [b,100,(x,y,w,h,class))] and [b,100,conf] => [b,100,6]
+    y_train = tf.concat([y_train, anchor_idx], axis=-1)
+
+    for anchor_idxs in anchor_masks:
+        res = transform_targets_for_output(y_train, grid_size, anchor_idxs)
+        y_outs.append(res)
+        grid_size *= 2
+    #[b,13,13,3,5*20] [b,26,26,3,5*20] [b,52,52,3,5*20]
+    return tuple(y_outs)
 
 
 def transform_images(x_train, size):

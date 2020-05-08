@@ -20,10 +20,10 @@ from yolov3_tf2.models import (
 from yolov3_tf2.utils import freeze_all
 import yolov3_tf2.dataset as dataset
 
-flags.DEFINE_string('dataset', './data/voc2012_train.tfrecord', 'path to dataset')
-flags.DEFINE_string('val_dataset', './data/voc2012_val.tfrecord', 'path to validation dataset')
-flags.DEFINE_boolean('tiny', False, 'yolov3 or yolov3-tiny')
-flags.DEFINE_string('weights', './checkpoints/yolov3.tf',
+flags.DEFINE_string('dataset', './data/voc2012_two_train.tfrecord', 'path to dataset')
+flags.DEFINE_string('val_dataset', './data/voc2012_two_val.tfrecord', 'path to validation dataset')
+flags.DEFINE_boolean('tiny', True, 'yolov3 or yolov3-tiny')
+flags.DEFINE_string('weights', './checkpoints/yolov3_tiny.tf',
                     'path to weights file')
 flags.DEFINE_string('classes', './data/voc2012.names', 'path to classes file')
 flags.DEFINE_enum('mode', 'fit', ['fit', 'eager_fit', 'eager_tf'],
@@ -38,10 +38,10 @@ flags.DEFINE_enum('transfer', 'darknet',
                   'frozen: Transfer and freeze all, '
                   'fine_tune: Transfer all and freeze darknet only')
 flags.DEFINE_integer('size', 416, 'image size')
-flags.DEFINE_integer('epochs', 20, 'number of epochs')
-flags.DEFINE_integer('batch_size', 4, 'batch size')
-flags.DEFINE_float('learning_rate', 1e-5, 'learning rate')
-flags.DEFINE_integer('num_classes', 20, 'number of classes in the model')
+flags.DEFINE_integer('epochs', 60, 'number of epochs')
+flags.DEFINE_integer('batch_size', 6, 'batch size')
+flags.DEFINE_float('learning_rate', 1e-4, 'learning rate')
+flags.DEFINE_integer('num_classes', 2, 'number of classes in the model')
 flags.DEFINE_integer('weights_num_classes', 80, 'specify num class for `weights` file if different, '
                                                   'useful in transfer learning with different number of classes')
 
@@ -130,7 +130,6 @@ def main(_argv):
             for mask in anchor_masks]
 
     model.summary()
-    model.summary()
     current_time = datetime.now().strftime("%Y%m%d-%H%M%S")
     log_dir = 'logs/' + current_time
     summary_writer = tf.summary.create_file_writer(log_dir)
@@ -160,7 +159,7 @@ def main(_argv):
                 avg_loss.update_state(total_loss)
                 with summary_writer.as_default():
                     tf.summary.scalar('train-loss', float(total_loss), step=batch)
-
+                    # tf.summary.scalar('pred-loss',list(map(lambda x: np.sum(x.numpy()), pred_loss)),step=batch)
 
             for batch, (images, labels) in enumerate(val_dataset):
                 outputs = model(images)
