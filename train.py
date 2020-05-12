@@ -20,13 +20,13 @@ from yolov3_tf2.models import (
 from yolov3_tf2.utils import freeze_all
 import yolov3_tf2.dataset as dataset
 
-flags.DEFINE_string('dataset', './data/voc2012_two_train.tfrecord', 'path to dataset')
-flags.DEFINE_string('val_dataset', './data/voc2012_two_val.tfrecord', 'path to validation dataset')
+flags.DEFINE_string('dataset', './data/voc2012_tark_train.tfrecord', 'path to dataset')
+flags.DEFINE_string('val_dataset', './data/voc2012_tark_val.tfrecord', 'path to validation dataset')
 flags.DEFINE_boolean('tiny', True, 'yolov3 or yolov3-tiny')
 flags.DEFINE_string('weights', './checkpoints/yolov3_tiny.tf',
                     'path to weights file')
 flags.DEFINE_string('classes', './data/voc2012.names', 'path to classes file')
-flags.DEFINE_enum('mode', 'fit', ['fit', 'eager_fit', 'eager_tf'],
+flags.DEFINE_enum('mode', 'eager_fit', ['fit', 'eager_fit', 'eager_tf'],
                   'fit: model.fit, '
                   'eager_fit: model.fit(run_eagerly=True), '
                   'eager_tf: custom GradientTape')
@@ -167,6 +167,7 @@ def main(_argv):
                 pred_loss = []
                 for output, label, loss_fn in zip(outputs, labels, loss):
                     pred_loss.append(loss_fn(label, output))
+
                 total_loss = tf.reduce_sum(pred_loss) + regularization_loss
 
                 logging.info("{}_val_{}, {}, {}".format(
@@ -174,15 +175,10 @@ def main(_argv):
                     list(map(lambda x: np.sum(x.numpy()), pred_loss))))
                 avg_val_loss.update_state(total_loss)
 
-            logging.info("{}, train: {}, val: {}".format(
-                epoch,
-                avg_loss.result().numpy(),
-                avg_val_loss.result().numpy()))
-
+            logging.info("{}, train: {}, val: {}".format(epoch,avg_loss.result().numpy(),avg_val_loss.result().numpy()))
             avg_loss.reset_states()
             avg_val_loss.reset_states()
-            model.save_weights(
-                'checkpoints/yolov3_train_{}.tf'.format(epoch))
+            model.save_weights('checkpoints/yolov3_train_{}.tf'.format(epoch))
     else:
         model.compile(optimizer=optimizer, loss=loss,run_eagerly=(FLAGS.mode == 'eager_fit'))
         callbacks = [
@@ -193,7 +189,7 @@ def main(_argv):
         ]
 
         history = model.fit(train_dataset,epochs=FLAGS.epochs,callbacks=callbacks,validation_data=val_dataset)
-
+        model.save_weights('checkpoints/yolov3_tiny.weights')
 
 if __name__ == '__main__':
     try:

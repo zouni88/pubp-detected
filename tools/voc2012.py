@@ -7,13 +7,13 @@ from absl.flags import FLAGS
 import tensorflow as tf
 import lxml.etree
 import tqdm
-
-flags.DEFINE_string('data_dir', 'D:\DeepLearning\datasets\VOCdevkit\VOC2012/',
+# ,'D:\DeepLearning\datasets\VOCdevkit\VOC2012/'
+flags.DEFINE_string('data_dir', r'D:\DeepLearning\datasets\tarkov',
                     'path to raw PASCAL VOC dataset')
 flags.DEFINE_enum('split', 'val', [
                   'train', 'val'], 'specify train or val spit')
 
-flags.DEFINE_string('output_file', './data/voc2012_two_val.tfrecord', 'outpot dataset')
+flags.DEFINE_string('output_file', './data/voc2012_tark_val.tfrecord', 'outpot dataset')
 flags.DEFINE_string('classes', './data/voc2012.names', 'classes file')
 
 

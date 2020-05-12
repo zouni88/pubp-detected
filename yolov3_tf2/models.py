@@ -1,4 +1,4 @@
-from absl import flags
+from absl import flags, logging
 from absl.flags import FLAGS
 import numpy as np
 import tensorflow as tf
@@ -294,6 +294,7 @@ def YoloLoss(anchors, classes=80, ignore_thresh=0.5):
         xy_loss = obj_mask * box_loss_scale * tf.reduce_sum(tf.square(true_xy - pred_xy), axis=-1)
         wh_loss = obj_mask * box_loss_scale * tf.reduce_sum(tf.square(true_wh - pred_wh), axis=-1)
         obj_loss = binary_crossentropy(true_obj, pred_obj)
+
         obj_loss = obj_mask * obj_loss + (1 - obj_mask) * ignore_mask * obj_loss
 
         # conf_focal = tf.pow(obj_mask - tf.squeeze(tf.sigmoid(pred_obj), -1), 2)

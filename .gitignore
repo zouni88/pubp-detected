@@ -3,7 +3,9 @@
 *.tar
 *.tfrecord
 /checkpoints/*
+/checkpoints_tiny/*
 /checkpoints_yolov3/*
+/tools/serving/
 /serving/*
 /logs/
 /Untitled.ipynb
@@ -12,6 +14,7 @@
 .idea/
 .idea
 *.mp4
+
 # Created by https://www.gitignore.io/api/python
 # Edit at https://www.gitignore.io/?templates=python
 
